@@ -3,4 +3,6 @@
     <string name="placeholder_cep">CEP</string>
     <string name="info_cep">Não necessita informar pontos nem traços.\n\nEx.: 00229102</string>
     <string name="text_btn_consultar">CONSULTAR</string>
+    <string name="toast_informe_cep">Informe o CEP</string>
+    <string name="toast_cep_invalido">CEP precisa ter 8 números</string>
 </resources>
