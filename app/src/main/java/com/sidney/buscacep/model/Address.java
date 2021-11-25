@@ -1,5 +1,7 @@
 package com.sidney.buscacep.model;
 
+import androidx.annotation.NonNull;
+
 public class Address {
 
     private String logradouro;
@@ -46,6 +48,7 @@ public class Address {
         this.uf = uf;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Address{" +

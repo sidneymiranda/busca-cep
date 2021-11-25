@@ -5,4 +5,5 @@
     <string name="text_btn_consultar">CONSULTAR</string>
     <string name="toast_informe_cep">Informe o CEP</string>
     <string name="toast_cep_invalido">CEP precisa ter 8 números</string>
+    <string name="title_Result">Resultado da busca</string>
 </resources>
