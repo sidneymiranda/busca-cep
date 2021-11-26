@@ -14,6 +14,9 @@ import java.util.Objects;
 
 /**
  * @author Sidney Miranda
+ *
+ * ResultActivity define a visualização do conteúdo presente em activity_result.xml,
+ * refere-se à tela de resultado da busco do cpf informado na tela inicial do app.
  */
 public class ResultActivity extends AppCompatActivity {
 

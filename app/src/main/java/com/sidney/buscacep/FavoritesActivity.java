@@ -10,6 +10,9 @@ import java.util.Objects;
 
 /**
  * @author Sidney Miranda
+ *
+ * FavorityActivity define a visualização do conteúdo presente em activity_favorites.xml,
+ * refere-se à lista de endereços favoritados pelo usuário.
  */
 public class FavoritesActivity extends AppCompatActivity {
 
@@ -19,7 +22,6 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
-
 
     /**
      * Boatão de retorno padrão do android

@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @author Sidney Miranda
+ *
+ * MainActivity define a visualização do conteúdo presente em activity_main.xml,
+ * refere-se à tela inicial do app.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -24,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
         cep = findViewById(R.id.cep);
 
         btnConsult.setOnClickListener(view -> {
-            Intent itent = new Intent(MainActivity.this, ResultActivity.class);
-            itent.putExtra(CPF, cep.getText().toString());
-            startActivity(itent);
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+            intent.putExtra(CPF, cep.getText().toString());
+            startActivity(intent);
         });
     }
 }
