@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * @author Sidney Miranda
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String CPF = "";

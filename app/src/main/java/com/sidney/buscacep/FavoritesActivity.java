@@ -1,32 +1,23 @@
 package com.sidney.buscacep;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * @author Sidney Miranda
  */
-public class ResultActivity extends AppCompatActivity {
-
-    FloatingActionButton btnFavorite;
+public class FavoritesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
-
+        setContentView(R.layout.activity_favorites);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        btnFavorite = findViewById(R.id.btnFavorite);
     }
+
 
     /**
      * Boatão de retorno padrão do android
@@ -44,8 +35,8 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     /**
-     * Método responsável por matar a activity de busca e
-     * retorna para MainActivity
+     * Método responsável por processar o evento de click no item do menu a activity atual e
+     * retornar para ResultActivity
      */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -62,14 +53,5 @@ public class ResultActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
-
-    /**
-     * Método que chama a activity dos endereços favoritados
-     */
-    public void showFavorites(View view) {
-        Intent favorite = new Intent(ResultActivity.this, FavoritesActivity.class);
-        startActivity(favorite);
-    }
-
 
 }
