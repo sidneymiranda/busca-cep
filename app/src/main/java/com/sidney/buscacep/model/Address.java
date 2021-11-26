@@ -1,13 +1,23 @@
 package com.sidney.buscacep.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Address {
+import java.io.Serializable;
 
+@Entity(tableName = "address_table")
+public class Address implements Serializable {
+
+    @PrimaryKey
+    private Long UID;
     private String logradouro;
     private String bairro;
     private String localidade;
     private String uf;
+
+    public Address() {
+    }
 
     public Address(String logradouro, String bairro, String localidade, String uf) {
         this.logradouro = logradouro;
@@ -16,9 +26,13 @@ public class Address {
         this.uf = uf;
     }
 
+    public Long getUID() { return UID; }
+
     public String getLogradouro() {
         return logradouro;
     }
+
+    public void setUID(Long UID) { this.UID = UID; }
 
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
