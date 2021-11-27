@@ -72,15 +72,4 @@ public class Address implements Serializable {
                 ", uf='" + uf + '\'' +
                 '}';
     }
-
-    //        "cep": "41110-300",
-//            "logradouro": "Rua Flor de Maio",
-//            "complemento": "",
-//            "bairro": "Pernambués",
-//            "localidade": "Salvador",
-//            "uf": "BA",
-//            "ibge": "2927408",
-//            "gia": "",
-//            "ddd": "71",
-//            "siafi": "3849"
 }
