@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity(tableName = "address_table")
 public class Address implements Serializable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private Long UID;
     private String logradouro;
     private String bairro;

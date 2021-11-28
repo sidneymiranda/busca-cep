@@ -32,7 +32,9 @@ public class ResultActivity extends AppCompatActivity {
 
     private static final String ERROR = "error";
     private static final String INFO = "info";
-    FloatingActionButton btnFavorite;
+
+    private FloatingActionButton btnFavorite;
+    private Address responseAddress;
 
 
     @Override
@@ -84,7 +86,7 @@ public class ResultActivity extends AppCompatActivity {
     /**
      * Método que chama a activity dos endereços favoritados
      */
-    public void showFavorites(View view) {
+    public void favorite(View view) {
         Intent favorite = new Intent(ResultActivity.this, FavoritesActivity.class);
         startActivity(favorite);
     }
@@ -104,7 +106,7 @@ public class ResultActivity extends AppCompatActivity {
                         Log.e(ERROR, "StatusCode:" + response.code());
                         Toast.makeText(ResultActivity.this, "CEP inválido!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Address responseAddress = response.body();
+                        responseAddress = response.body();
 
                         TextView rua = findViewById(R.id.rua);
                         TextView bairro = findViewById(R.id.bairro);
@@ -126,4 +128,5 @@ public class ResultActivity extends AppCompatActivity {
             });
         }
     }
+
 }
