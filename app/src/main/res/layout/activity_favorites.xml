@@ -12,13 +12,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         tools:context=".FavoritesActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:title="Favoritos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listAdrress"
                 android:layout_width="match_parent"
