@@ -6,11 +6,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sidney.buscacep.model.Address;
+import com.sidney.buscacep.persistence.AddressRepository;
 
 import java.util.Objects;
 
@@ -42,7 +44,7 @@ public class ResultActivity extends AppCompatActivity {
         btnFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveFavorite(v);
+                toogleFavorite(v);
             }
         });
     }
@@ -85,20 +87,30 @@ public class ResultActivity extends AppCompatActivity {
      * Método que chama a activity dos endereços favoritados
      */
     public void saveFavorite(View view) {
-        handleFavorite();
-//        AddressRepository db = new AddressRepository(getApplication());
-//
-//        Address address = Address.AddressBuilder.builder()
-//                .setUID(0l)
-//                .setLogradouro(responseAddress.getLogradouro())
-//                .setBairro(responseAddress.getBairro())
-//                .setLocalidade(responseAddress.getLocalidade())
-//                .setUf(responseAddress.getUf())
-//                .build();
-//
-//        db.save(address);
-    }
+        Address address = Address.AddressBuilder.builder()
+                .setUID(0l)
+                .setLogradouro(responseAddress.getLogradouro())
+                .setBairro(responseAddress.getBairro())
+                .setLocalidade(responseAddress.getLocalidade())
+                .setUf(responseAddress.getUf())
+                .build();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AddressRepository db = new AddressRepository(getApplication());
+                db.save(address);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ResultActivity.this, "Endereço salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).start();
+
+    }
 
     private void loadResult() {
         if (getIntent().hasExtra("result")) {
@@ -117,14 +129,14 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    private void handleFavorite() {
+    private void toogleFavorite(View view) {
         if (!favorite) {
             favorite = true;
+            saveFavorite(view);
             btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_rate_24, getTheme()));
         } else {
-            btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_border_24, getTheme()));
             favorite = false;
+            btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_border_24, getTheme()));
         }
     }
-
 }

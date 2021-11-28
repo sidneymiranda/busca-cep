@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sidney.buscacep.api.Service;
 import com.sidney.buscacep.model.Address;
+import com.sidney.buscacep.persistence.AddressRepository;
 
 import retrofit2.Call;
 import retrofit2.Callback;
