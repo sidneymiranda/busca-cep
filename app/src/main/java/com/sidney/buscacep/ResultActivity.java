@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sidney.buscacep.model.Address;
-import com.sidney.buscacep.persistence.AddressRepository;
 
 import java.util.Objects;
 
@@ -25,7 +24,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private static final String ERROR = "error";
     private static final String INFO = "info";
-
+    private boolean favorite = false;
     private ImageView btnFavorite;
     private Address responseAddress;
 
@@ -40,6 +39,12 @@ public class ResultActivity extends AppCompatActivity {
         loadResult();
 
         btnFavorite = findViewById(R.id.btnFavorite);
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveFavorite(v);
+            }
+        });
     }
 
     /**
@@ -80,17 +85,18 @@ public class ResultActivity extends AppCompatActivity {
      * Método que chama a activity dos endereços favoritados
      */
     public void saveFavorite(View view) {
-        AddressRepository db = new AddressRepository(getApplication());
-
-        Address address = Address.AddressBuilder.builder()
-                .setUID(0l)
-                .setLogradouro(responseAddress.getLogradouro())
-                .setBairro(responseAddress.getBairro())
-                .setLocalidade(responseAddress.getLocalidade())
-                .setUf(responseAddress.getUf())
-                .build();
-
-        db.save(address);
+        handleFavorite();
+//        AddressRepository db = new AddressRepository(getApplication());
+//
+//        Address address = Address.AddressBuilder.builder()
+//                .setUID(0l)
+//                .setLogradouro(responseAddress.getLogradouro())
+//                .setBairro(responseAddress.getBairro())
+//                .setLocalidade(responseAddress.getLocalidade())
+//                .setUf(responseAddress.getUf())
+//                .build();
+//
+//        db.save(address);
     }
 
 
@@ -110,4 +116,15 @@ public class ResultActivity extends AppCompatActivity {
             estado.setText(responseAddress.getUf());
         }
     }
+
+    private void handleFavorite() {
+        if (!favorite) {
+            favorite = true;
+            btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_rate_24, getTheme()));
+        } else {
+            btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_border_24, getTheme()));
+            favorite = false;
+        }
+    }
+
 }

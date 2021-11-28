@@ -64,10 +64,11 @@
 
         <ImageView
             android:id="@+id/btnFavorite"
-            android:src="@drawable/ic_star_border_24"
+            android:src="@drawable/ic_star_selector"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
+            android:clickable="true"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
