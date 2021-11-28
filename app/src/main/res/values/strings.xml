@@ -8,4 +8,6 @@
     <string name="title_result">Resultado</string>
     <string name="title_favorites">Favoritos</string>
     <string name="title_activity_menu">MenuActivity</string>
+    <string name="text_btn_favoritos">FAVORITOS</string>
+    <string name="sigla_estado">BA</string>
 </resources>

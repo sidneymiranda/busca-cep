@@ -1,11 +1,18 @@
 package com.sidney.buscacep;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 
+import com.sidney.buscacep.model.Address;
+import com.sidney.buscacep.persistence.AddressRepository;
+
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,9 +49,10 @@ public class FavoritesActivity extends AppCompatActivity {
      * Método responsável por processar o evento de click no item do menu "voltar" e
      * retorna para ResultActivity
      */
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            Intent home = new Intent(FavoritesActivity.this, MainActivity.class);
+            startActivity(home);
             return true;
         }
         return super.onOptionsItemSelected(item);

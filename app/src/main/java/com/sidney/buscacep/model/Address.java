@@ -1,6 +1,5 @@
 package com.sidney.buscacep.model;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -16,23 +15,17 @@ public class Address implements Serializable {
     private String localidade;
     private String uf;
 
-    public Address() {
+    public Long getUID() {
+        return UID;
     }
 
-    public Address(String logradouro, String bairro, String localidade, String uf) {
-        this.logradouro = logradouro;
-        this.bairro = bairro;
-        this.localidade = localidade;
-        this.uf = uf;
+    public void setUID(Long UID) {
+        this.UID = UID;
     }
-
-    public Long getUID() { return UID; }
 
     public String getLogradouro() {
         return logradouro;
     }
-
-    public void setUID(Long UID) { this.UID = UID; }
 
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
@@ -62,14 +55,53 @@ public class Address implements Serializable {
         this.uf = uf;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "Address{" +
-                "logradouro='" + logradouro + '\'' +
-                ", bairro='" + bairro + '\'' +
-                ", localidade='" + localidade + '\'' +
-                ", uf='" + uf + '\'' +
-                '}';
+    public static class AddressBuilder {
+        private Long UID;
+        private String logradouro;
+        private String bairro;
+        private String localidade;
+        private String uf;
+
+        private AddressBuilder() {
+        }
+
+        public static AddressBuilder builder() {
+            return new AddressBuilder();
+        }
+
+        public AddressBuilder setUID(Long UID) {
+            this.UID = UID;
+            return this;
+        }
+
+        public AddressBuilder setLogradouro(String logradouro) {
+            this.logradouro = logradouro;
+            return this;
+        }
+
+        public AddressBuilder setBairro(String bairro) {
+            this.bairro = bairro;
+            return this;
+        }
+
+        public AddressBuilder setLocalidade(String localidade) {
+            this.localidade = localidade;
+            return this;
+        }
+
+        public AddressBuilder setUf(String uf) {
+            this.uf = uf;
+            return this;
+        }
+
+        public Address build() {
+            Address address = new Address();
+            address.UID = UID;
+            address.logradouro = logradouro;
+            address.bairro = bairro;
+            address.localidade = localidade;
+            address.uf = uf;
+            return address;
+        }
     }
 }

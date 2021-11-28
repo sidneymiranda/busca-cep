@@ -1,6 +1,5 @@
 package com.sidney.buscacep;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sidney.buscacep.api.Service;
 import com.sidney.buscacep.model.Address;
+import com.sidney.buscacep.persistence.AddressRepository;
 
 import java.util.Objects;
 
@@ -68,7 +68,7 @@ public class ResultActivity extends AppCompatActivity {
      * Método responsável por processar o evento de click no item do menu "voltar" e
      * retorna para MainActivity
      */
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
@@ -86,16 +86,24 @@ public class ResultActivity extends AppCompatActivity {
     /**
      * Método que chama a activity dos endereços favoritados
      */
-    public void favorite(View view) {
-        Intent favorite = new Intent(ResultActivity.this, FavoritesActivity.class);
-        startActivity(favorite);
+    public void saveFavorite(View view) {
+        AddressRepository db = new AddressRepository(getApplication());
+
+        Address address = Address.AddressBuilder.builder()
+                .setUID(0l)
+                .setLogradouro(responseAddress.getLogradouro())
+                .setBairro(responseAddress.getBairro())
+                .setLocalidade(responseAddress.getLocalidade())
+                .setUf(responseAddress.getUf())
+                .build();
+
+        db.save(address);
     }
 
     private void loadResult() {
         if (getIntent().hasExtra("cep")) {
             Bundle extras = getIntent().getExtras();
             Log.i(extras.getString("cep"), extras.toString());
-            System.out.println(extras.get("cep"));
 
             Call<Address> address = Service.getInstance().getWebService().findAddressByCep(extras.get("cep").toString());
 

@@ -27,6 +27,6 @@ public interface AddressDAO {
     void removeAll();
 
     @Query("SELECT * FROM address_table")
-    LiveData<List<Address>> addressList();
+    LiveData<List<Address>> addresses();
 
 }
