@@ -1,13 +1,16 @@
 <resources>
-    <string name="app_name">BuscaCEP</string>
+    <string name="search">Buscar Endereço</string>
     <string name="placeholder_cep">CEP</string>
     <string name="info_cep">Não necessita informar pontos nem traços.\n\nEx.: 00229102</string>
     <string name="text_btn_consultar">CONSULTAR</string>
     <string name="toast_informe_cep">Informe o CEP</string>
     <string name="toast_cep_invalido">CEP precisa ter 8 números</string>
     <string name="title_result">Resultado</string>
-    <string name="title_favorites">Favoritos</string>
+    <string name="title_favorites">Meus Favoritos</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="text_btn_favoritos">FAVORITOS</string>
-    <string name="sigla_estado">BA</string>
+    <string name="new_address">Botão para pesquisar novo endereço</string>
+    <string name="favorities">favorities</string>
+    <string name="incorrect_cep">incorrect_cep</string>
+    <string name="correct_cep">correct_cep</string>
 </resources>

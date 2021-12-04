@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
+    android:layout_gravity="center"
     android:background="@drawable/card_view"
-    tools:showIn="@layout/activity_favorites">
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/material_on_surface_stroke">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/sigla_estado"
@@ -21,58 +22,54 @@
             android:layout_height="48dp"
             android:background="@drawable/circle"
             android:gravity="center"
-            android:text="@string/sigla_estado"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/rua"
-            android:ellipsize="marquee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/sigla_estado"
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@id/sigla_estado"
-            android:text="Teste"
+            android:ellipsize="marquee"
             android:textColor="@color/darkerGray"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/bairro"
-            android:ellipsize="marquee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/rua"
+            android:layout_alignStart="@+id/rua"
             android:layout_alignTop="@+id/sigla_estado"
             android:layout_marginTop="26dp"
             android:layout_toEndOf="@id/sigla_estado"
-            android:text="Teste"
-            android:layout_below="@+id/rua"
-            android:layout_alignStart="@+id/rua"
+            android:ellipsize="marquee"
             android:textColor="@color/darkerGray"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/cidade"
-            android:ellipsize="marquee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/sigla_estado"
-            android:layout_marginTop="52dp"
-            android:layout_toEndOf="@id/sigla_estado"
             android:layout_below="@+id/bairro"
             android:layout_alignStart="@+id/bairro"
-            android:text="Teste"
+            android:layout_alignTop="@+id/sigla_estado"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="25dp"
+            android:layout_toEndOf="@id/sigla_estado"
+            android:ellipsize="marquee"
             android:textColor="@color/darkerGray"
-            android:textSize="18sp"
-            android:layout_marginEnd="25dp"/>
-        
+            android:textSize="18sp" />
+
         <ImageView
-            android:id="@+id/icon_favorite"
-            android:src="@drawable/ic_star_border_24"
+            android:id="@+id/btn_remove_address"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>    
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_delete_24" />
+    </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

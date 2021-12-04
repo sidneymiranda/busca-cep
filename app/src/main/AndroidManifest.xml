@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sidney.buscacep">
 
-    <uses-permission
-        android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,17 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuscaCEP">
         <activity
+            android:name=".SearchAddressActivity"
+            android:exported="true"
+            android:label="@string/search" />
+        <activity
             android:name=".FavoritesActivity"
             android:exported="true"
-            android:label="@string/title_favorites" />
-        <activity
-            android:name=".ResultActivity"
-            android:exported="true"
-            android:label="@string/title_result" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:label="@string/title_favorites">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

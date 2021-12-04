@@ -10,25 +10,25 @@ import java.util.List;
 
 public class AddressRepository {
 
+//    final List<Address> mAllAddress;
     private final AddressDAO mAddressDao;
-    private final LiveData<List<Address>> mAllAddress;
 
     public AddressRepository(Application application) {
         AddressRoomDatabase db = AddressRoomDatabase.getDatabase(application);
         mAddressDao = db.addressDAO();
-        mAllAddress = mAddressDao.addresses();
+//        mAllAddress = mAddressDao.addresses();
     }
 
-    public LiveData<List<Address>> addressList() {
-        return mAllAddress;
+    public List<Address> addressList() {
+        return mAddressDao.addresses();
     }
 
     public void save(Address address) {
-        mAddressDao.save();
+        mAddressDao.save(address);
     }
 
     public void remove(Address address) {
-        mAddressDao.remove();
+        mAddressDao.remove(address);
     }
 
     public void removeAll() {
