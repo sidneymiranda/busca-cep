@@ -156,7 +156,7 @@ public class SearchAddressActivity extends AppCompatActivity {
         favorite = true;
         Address address = Address.AddressBuilder.builder()
                 .setUID(null)
-                .setLogradouro(responseAddress.getLogradouro())
+                .setLogradouro(responseAddress.getLogradouro().equals("") ? "CEP Geral" : responseAddress.getLogradouro())
                 .setBairro(responseAddress.getBairro())
                 .setLocalidade(responseAddress.getLocalidade())
                 .setUf(responseAddress.getUf())

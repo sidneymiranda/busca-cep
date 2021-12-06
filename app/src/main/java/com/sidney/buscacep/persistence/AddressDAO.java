@@ -17,11 +17,11 @@ import java.util.List;
 @Dao
 public interface AddressDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void save(Address... addresses);
 
     @Delete
-    void remove(Address addresses);
+    int remove(Address addresses);
 
     @Query("DELETE FROM address_table")
     void removeAll();
