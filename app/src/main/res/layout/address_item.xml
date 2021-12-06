@@ -44,7 +44,7 @@
             android:layout_toEndOf="@id/sigla_estado"
             android:ellipsize="marquee"
             android:textColor="@color/darkerGray"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/bairro"
@@ -52,12 +52,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rua"
             android:layout_alignStart="@+id/rua"
-            android:layout_alignTop="@+id/sigla_estado"
-            android:layout_marginTop="26dp"
+            android:layout_alignTop="@+id/rua"
+            android:layout_marginTop="30dp"
             android:layout_toEndOf="@id/sigla_estado"
             android:ellipsize="marquee"
             android:textColor="@color/darkerGray"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/cidade"
@@ -71,7 +71,7 @@
             android:layout_toEndOf="@id/sigla_estado"
             android:ellipsize="marquee"
             android:textColor="@color/darkerGray"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/btn_remove_address"

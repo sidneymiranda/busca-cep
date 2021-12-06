@@ -36,4 +36,8 @@ public class AddressRepository {
     public void removeAll() {
         mAddressDao.removeAll();
     }
+
+    public Address findByCep(String cep) {
+        return mAddressDao.findByCep(cep);
+    }
 }

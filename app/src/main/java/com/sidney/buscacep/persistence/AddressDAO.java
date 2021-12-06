@@ -32,3 +32,4 @@ public interface AddressDAO {
     @Query("SELECT * FROM address_table WHERE cep = :cep")
     Address findByCep(String cep);
 }
+

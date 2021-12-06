@@ -13,13 +13,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sidney.buscacep.api.Service;
 import com.sidney.buscacep.model.Address;
 import com.sidney.buscacep.persistence.AddressRepository;
-import com.sidney.buscacep.persistence.AddressRoomDatabase;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,31 +82,28 @@ public class SearchAddressActivity extends AppCompatActivity {
      * @param cep corresponde aos números informado pelo usuário
      */
     private void searchAddress(String cep) {
-        Call<Address> address = Service.getInstance().getWebService().findAddressByCep(cep);
-        address.enqueue(new Callback<Address>() {
+        new Thread(new Runnable() {
             @Override
-            public void onResponse(@NonNull Call<Address> call, @NonNull Response<Address> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    Log.e(ERROR, "StatusCode:" + response.code());
-                    Toast.makeText(SearchAddressActivity.this, "CEP inválido!", Toast.LENGTH_SHORT).show();
-                } else {
+            public void run() {
+                AddressRepository repository = new AddressRepository(getApplication());
+                Address found = repository.findByCep(cep.substring(0, 5) + '-' + cep.substring(5));
+
+                if (found != null) {
+                    Log.i("a", "BUSCOU DO BANCO!");
                     View card = findViewById(R.id.card_result);
                     if (card.getVisibility() == View.GONE) {
                         card.setVisibility(View.VISIBLE);
                     } else {
                         clearResult();
                     }
-                    responseAddress = response.body();
+                    responseAddress = found;
                     loadResult(responseAddress);
+                } else {
+                    Log.i("a", "Chamou API");
+                    searchInApi(cep);
                 }
             }
-
-            @Override
-            public void onFailure(@NonNull Call<Address> call, @NonNull Throwable t) {
-                Log.e(INFO, "Erro:" + t.getMessage());
-                Toast.makeText(SearchAddressActivity.this, "Ocorreu um erro", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }).start();
     }
 
     /**
@@ -155,7 +152,6 @@ public class SearchAddressActivity extends AppCompatActivity {
     private void saveFavorite() {
         favorite = true;
         Address address = Address.AddressBuilder.builder()
-                .setUID(null)
                 .setLogradouro(responseAddress.getLogradouro().equals("") ? "CEP Geral" : responseAddress.getLogradouro())
                 .setBairro(responseAddress.getBairro())
                 .setLocalidade(responseAddress.getLocalidade())
@@ -179,6 +175,47 @@ public class SearchAddressActivity extends AppCompatActivity {
         favorite = false;
         btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_border_24, getTheme()));
         Toast.makeText(SearchAddressActivity.this, "Removido dos favoritos!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void searchByDatabase(String cep) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AddressRepository repository = new AddressRepository(getApplication());
+                Address found = repository.findByCep(cep);
+                if (found != null)
+                    Log.i("a", found.getBairro());
+            }
+        }).start();
+    }
+
+    private void searchInApi(String cep) {
+        Call<Address> address = Service.getInstance().getWebService().findAddressByCep(cep);
+        address.enqueue(new Callback<Address>() {
+            @Override
+            public void onResponse(@NonNull Call<Address> call, @NonNull Response<Address> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    Log.e(ERROR, "StatusCode:" + response.code());
+                    Toast.makeText(SearchAddressActivity.this, "CEP inválido!", Toast.LENGTH_SHORT).show();
+                } else {
+                    responseAddress = response.body();
+                    View card = findViewById(R.id.card_result);
+                    if (card.getVisibility() == View.GONE) {
+                        card.setVisibility(View.VISIBLE);
+                    } else {
+                        clearResult();
+                    }
+                    responseAddress = response.body();
+                    loadResult(responseAddress);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Address> call, @NonNull Throwable t) {
+                Log.e(INFO, "Erro:" + t.getMessage());
+                Toast.makeText(SearchAddressActivity.this, "Ocorreu um erro", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -2,6 +2,7 @@ package com.sidney.buscacep;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +17,7 @@ import com.sidney.buscacep.model.Address;
 import com.sidney.buscacep.persistence.AddressRoomDatabase;
 import com.sidney.buscacep.viewmodel.FavoritesViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,11 +44,13 @@ public class FavoritesActivity extends AppCompatActivity {
         btRemove = findViewById(R.id.btn_remove_address);
         recyclerView = findViewById(R.id.addressRecycleView);
 
-        db = Room.databaseBuilder(getApplicationContext(), AddressRoomDatabase.class, "busca_cep_database")
+        db = Room.databaseBuilder(getApplicationContext(), AddressRoomDatabase.class, "address_db")
                 .allowMainThreadQueries()
                 .build();
         list = db.addressDAO().addresses();
-
+        for (Address a: list) {
+            Log.i("a", "ENDEREÇO =====>"+a.toString());
+        }
 
 //      RecycleView
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

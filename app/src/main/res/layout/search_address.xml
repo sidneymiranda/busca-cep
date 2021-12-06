@@ -80,7 +80,7 @@
                     android:layout_toEndOf="@id/uf"
                     android:ellipsize="marquee"
                     android:textColor="@color/darkerGray"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/bairro"
@@ -89,11 +89,11 @@
                     android:layout_below="@+id/rua"
                     android:layout_alignStart="@+id/rua"
                     android:layout_alignTop="@+id/rua"
-                    android:layout_marginTop="26dp"
+                    android:layout_marginTop="33dp"
                     android:layout_toEndOf="@id/uf"
                     android:ellipsize="marquee"
                     android:textColor="@color/darkerGray"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/cidade"
@@ -102,11 +102,11 @@
                     android:layout_below="@+id/bairro"
                     android:layout_alignStart="@+id/bairro"
                     android:layout_alignTop="@+id/bairro"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="30dp"
                     android:layout_toEndOf="@id/uf"
                     android:ellipsize="marquee"
                     android:textColor="@color/darkerGray"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/btn_favorite"
