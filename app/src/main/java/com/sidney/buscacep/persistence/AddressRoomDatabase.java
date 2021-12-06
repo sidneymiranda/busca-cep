@@ -19,26 +19,23 @@ import java.util.concurrent.Executors;
 
 @Database(entities = {Address.class}, version = 1, exportSchema = false)
 public abstract class AddressRoomDatabase extends RoomDatabase {
-    abstract AddressDAO addressDAO();
-
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private static volatile AddressRoomDatabase INSTANCE;
+    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
 
-//    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
-//        @Override
-//        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-//            super.onCreate(db);
-//
-//            databaseWriteExecutor.execute(() -> {
-//                AddressDAO dao = INSTANCE.addressDAO();
-//                dao.removeAll();
-//            });
-//        }
-//    };
+            databaseWriteExecutor.execute(() -> {
+                AddressDAO dao = INSTANCE.addressDAO();
+                dao.removeAll();
+            });
+        }
+    };
 
-    static AddressRoomDatabase getDatabase(final Context context) {
+    public static AddressRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AddressRoomDatabase.class) {
                 if (INSTANCE == null) {
@@ -51,7 +48,5 @@ public abstract class AddressRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-
-
-
+    public abstract AddressDAO addressDAO();
 }

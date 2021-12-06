@@ -4,6 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(tableName = "address_table")
 public class Address implements Serializable {
@@ -14,6 +15,7 @@ public class Address implements Serializable {
     private String bairro;
     private String localidade;
     private String uf;
+    private String cep;
 
     public Long getUID() {
         return UID;
@@ -55,12 +57,34 @@ public class Address implements Serializable {
         this.uf = uf;
     }
 
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+        Address address = (Address) o;
+        return getCep().equals(address.getCep());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCep());
+    }
+
     public static class AddressBuilder {
         private Long UID;
         private String logradouro;
         private String bairro;
         private String localidade;
         private String uf;
+        private String cep;
 
         private AddressBuilder() {
         }
@@ -94,6 +118,12 @@ public class Address implements Serializable {
             return this;
         }
 
+        public AddressBuilder setCep(String cep) {
+            this.cep = cep;
+            return this;
+        }
+
+
         public Address build() {
             Address address = new Address();
             address.UID = UID;
@@ -101,6 +131,7 @@ public class Address implements Serializable {
             address.bairro = bairro;
             address.localidade = localidade;
             address.uf = uf;
+            address.cep = cep;
             return address;
         }
     }

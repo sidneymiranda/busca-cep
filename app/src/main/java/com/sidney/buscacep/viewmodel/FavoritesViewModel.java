@@ -9,25 +9,28 @@ import androidx.lifecycle.MutableLiveData;
 import com.sidney.buscacep.model.Address;
 import com.sidney.buscacep.persistence.AddressRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesActivityViewModel extends AndroidViewModel {
-
+public class FavoritesViewModel extends AndroidViewModel {
+    private AddressRepository repository;
     private MutableLiveData<List<Address>> dataSource;
-    private final AddressRepository repository;
 
-    public FavoritesActivityViewModel(Application application) {
+    public FavoritesViewModel(Application application) {
         super(application);
         repository = new AddressRepository(application);
-//        dataSource = (MutableLiveData<List<Address>>) repository.addressList();
     }
 
-    public LiveData<List<Address>> getFavoriteList() {
-        List<Address> list = repository.addressList();
-        if (list == null) {
+    public LiveData<List<Address>> getAllFavorites() {
+        if (dataSource == null) {
             dataSource = new MutableLiveData<>();
-        } else {
-            dataSource.postValue(list);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    List<Address> allFavorites = repository.getAllFavorites();
+                    dataSource.postValue(allFavorites);
+                }
+            }).start();
         }
         return dataSource;
     }
@@ -41,6 +44,6 @@ public class FavoritesActivityViewModel extends AndroidViewModel {
     }
 
     public void saveFavorite(Address address) {
-        repository.save(address);
+        repository.saveFavorite(address);
     }
 }

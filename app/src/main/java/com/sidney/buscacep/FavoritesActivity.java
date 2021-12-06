@@ -1,22 +1,23 @@
 package com.sidney.buscacep;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sidney.buscacep.adapter.AddressAdapter;
 import com.sidney.buscacep.model.Address;
-import com.sidney.buscacep.viewmodel.FavoritesActivityViewModel;
+import com.sidney.buscacep.persistence.AddressRepository;
+import com.sidney.buscacep.persistence.AddressRoomDatabase;
+import com.sidney.buscacep.viewmodel.FavoritesViewModel;
 
 import java.util.List;
 
@@ -28,18 +29,36 @@ import java.util.List;
  */
 public class FavoritesActivity extends AppCompatActivity {
 
-    private static final String NO_DATA = "Não há endereços salvos!";
     private AddressAdapter adapter;
     private RecyclerView recyclerView;
-    private FavoritesActivityViewModel viewModel;
+    private FavoritesViewModel viewModel;
+    private FloatingActionButton btnSearch;
     private ImageView btRemove;
+    private List<Address> list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites_list);
 
-        FloatingActionButton btnSearch = findViewById(R.id.btn_search_address);
+        btnSearch = findViewById(R.id.btn_search_address);
+        btRemove = findViewById(R.id.btn_remove_address);
+        recyclerView = findViewById(R.id.addressRecycleView);
+
+        AddressRoomDatabase db = Room.databaseBuilder(getApplicationContext(), AddressRoomDatabase.class, "busca_cep_database")
+                .allowMainThreadQueries()
+                .build();
+        list = db.addressDAO().addresses();
+
+
+//      RecycleView
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        adapter = new AddressAdapter(list, this);
+        recyclerView.setAdapter(adapter);
+        Log.i("d", String.valueOf("LISTA" + list.size()));
+//        viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+//        viewModel.getAllFavorites().observe(this, address -> adapter.update(address));
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,27 +67,5 @@ public class FavoritesActivity extends AppCompatActivity {
                 startActivity(search);
             }
         });
-
-        btRemove = findViewById(R.id.btn_remove_address);
-
-//      RecycleView
-        recyclerView = findViewById(R.id.addressRecycleView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new AddressAdapter(this);
-        recyclerView.setAdapter(adapter);
-
-//      ViewModel
-        viewModel = new ViewModelProvider(this).get(FavoritesActivityViewModel.class);
-//        viewModel.getFavoriteList().observe(FavoritesActivity.this, addresses -> {
-//            if (addresses == null || addresses.size() == 0) {
-//                Toast.makeText(FavoritesActivity.this, NO_DATA, Toast.LENGTH_SHORT).show();
-//            } else {
-//                adapter.setAddressList(addresses);
-//            }
-//        });
-    }
-
-    private void removeAddress(Address address) {
-        viewModel.removeFavorite(address);
     }
 }

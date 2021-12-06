@@ -1,6 +1,5 @@
 package com.sidney.buscacep.persistence;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -18,7 +17,7 @@ import java.util.List;
 @Dao
 public interface AddressDAO {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void save(Address... addresses);
 
     @Delete
@@ -30,4 +29,6 @@ public interface AddressDAO {
     @Query("SELECT * FROM address_table")
     List<Address> addresses();
 
+    @Query("SELECT * FROM address_table WHERE cep = :cep")
+    Address findByCep(String cep);
 }

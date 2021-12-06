@@ -13,11 +13,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sidney.buscacep.api.Service;
 import com.sidney.buscacep.model.Address;
 import com.sidney.buscacep.persistence.AddressRepository;
+import com.sidney.buscacep.persistence.AddressRoomDatabase;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,9 +37,8 @@ public class SearchAddressActivity extends AppCompatActivity {
     private static final String INFO = "info";
 
     private boolean favorite = false;
-
     private Address responseAddress;
-
+    private ImageView btnFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,66 +50,29 @@ public class SearchAddressActivity extends AppCompatActivity {
         ImageView btnFavorites = findViewById(R.id.btn_favorite);
         TextView cep = findViewById(R.id.cep);
         FloatingActionButton goFavorites = findViewById(R.id.spy_favorite);
+        btnFavorite = findViewById(R.id.btn_favorite);
 
         btnConsult.setOnClickListener(view -> {
             if (cep.getText().length() == 8) {
                 hideKeyboard(getApplicationContext(), cep);
                 searchAddress(cep.getText().toString());
-            } else if (cep.getText().equals(null) || cep.getText().equals("")) {
+            } else if (cep.getText().toString().equals("")) {
                 Toast.makeText(SearchAddressActivity.this, "Informe o CEP!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(SearchAddressActivity.this, "CEP inválido!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddressRepository repository = new AddressRepository(getApplication());
-                Address address = Address.AddressBuilder.builder()
-                        .setUID(0l)
-                        .setLogradouro(responseAddress.getLogradouro())
-                        .setBairro(responseAddress.getBairro())
-                        .setLocalidade(responseAddress.getLocalidade())
-                        .setUf(responseAddress.getUf())
-                        .build();
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AddressRepository repository = new AddressRepository(getApplication());
-                        ImageView btnFavorite = findViewById(R.id.btn_favorite);
-
-                        repository.save(address);
-                        if (!favorite) {
-                            favorite = true;
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_rate_24, getTheme()));
-                                    Toast.makeText(SearchAddressActivity.this, "Endereço salvo com sucesso!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_border_24, getTheme()));
-                                    Toast.makeText(SearchAddressActivity.this, "Removido dos favoritos!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }
-                }).start();
+        btnFavorites.setOnClickListener(view -> {
+            if (!favorite && responseAddress != null) {
+                saveFavorite();
+            } else {
+                removeFavorite();
             }
         });
 
-        goFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SearchAddressActivity.this, FavoritesActivity.class));
-            }
-        });
+        goFavorites.setOnClickListener(v -> startActivity(
+                new Intent(SearchAddressActivity.this, FavoritesActivity.class)));
     }
 
     /**
@@ -122,7 +86,7 @@ public class SearchAddressActivity extends AppCompatActivity {
         address.enqueue(new Callback<Address>() {
             @Override
             public void onResponse(@NonNull Call<Address> call, @NonNull Response<Address> response) {
-                if (!response.isSuccessful() || response.body().getUf() == null) {
+                if (!response.isSuccessful() || response.body() == null) {
                     Log.e(ERROR, "StatusCode:" + response.code());
                     Toast.makeText(SearchAddressActivity.this, "CEP inválido!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -138,7 +102,7 @@ public class SearchAddressActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Address> call, Throwable t) {
+            public void onFailure(@NonNull Call<Address> call, @NonNull Throwable t) {
                 Log.e(INFO, "Erro:" + t.getMessage());
                 Toast.makeText(SearchAddressActivity.this, "Ocorreu um erro", Toast.LENGTH_SHORT).show();
             }
@@ -177,14 +141,44 @@ public class SearchAddressActivity extends AppCompatActivity {
         bairro.setText("");
         cidade.setText("");
         estado.setText("");
+        btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_border_24, getTheme()));
     }
 
     /**
      * Método responsável por esconder o teclado
      */
-    private void hideKeyboard(Context context, View view) {
+    private void hideKeyboard(@NonNull Context context, @NonNull View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void saveFavorite() {
+        favorite = true;
+        Address address = Address.AddressBuilder.builder()
+                .setUID(null)
+                .setLogradouro(responseAddress.getLogradouro())
+                .setBairro(responseAddress.getBairro())
+                .setLocalidade(responseAddress.getLocalidade())
+                .setUf(responseAddress.getUf())
+                .setCep(responseAddress.getCep())
+                .build();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AddressRepository repo = new AddressRepository(getApplication());
+                repo.saveFavorite(address);
+            }
+        }).start();
+
+        btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_rate_24, getTheme()));
+        Toast.makeText(SearchAddressActivity.this, "Endereço salvo com sucesso!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void removeFavorite() {
+        favorite = false;
+        btnFavorite.setBackground(getResources().getDrawable(R.drawable.ic_star_border_24, getTheme()));
+        Toast.makeText(SearchAddressActivity.this, "Removido dos favoritos!", Toast.LENGTH_SHORT).show();
     }
 
 }
